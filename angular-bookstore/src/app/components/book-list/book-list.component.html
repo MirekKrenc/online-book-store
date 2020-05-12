@@ -1,0 +1,22 @@
+<div class="container">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let book of books">
+                <td>
+                    <img [src]="replacePngToJpg(book.imageUrl)" height="100" alt="book image">
+                </td>
+                <td>{{book.name}}</td>
+                <td>{{book.description}}</td>
+                <td>{{convertPrice(book.unitPrice) | currency: 'PLN ' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
