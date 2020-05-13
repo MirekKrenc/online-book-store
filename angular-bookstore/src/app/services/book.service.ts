@@ -13,10 +13,19 @@ export class BookService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getBooks():Observable<Book[]> {
+  getBooks(theCategoryId: number):Observable<Book[]> {
+    if (theCategoryId === 0)
+    {
     return this.httpClient.get<GetBooksFromResponse>(this.baseUrl).pipe(
       map(response => response._embedded.books)
     );
+    } else {
+      const searchUrl = `${this.baseUrl}/search/categoryid?id=${theCategoryId}`;
+      return this.httpClient.get<GetBooksFromResponse>(searchUrl).pipe(
+        map(response => response._embedded.books)
+      );
+
+    }
   }
 }
 
