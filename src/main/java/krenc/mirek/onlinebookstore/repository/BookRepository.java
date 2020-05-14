@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin
+//@CrossOrigin
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @RestResource(path = "categoryid")
