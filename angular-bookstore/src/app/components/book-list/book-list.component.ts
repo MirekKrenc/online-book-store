@@ -11,6 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class BookListComponent implements OnInit {
 
+  books: Book[] = [];
+  currentCategoryId: number;
+  searchMode: boolean;
   
 
   constructor(private _bookService: BookService,
@@ -23,13 +26,26 @@ export class BookListComponent implements OnInit {
     })
   }
 
-  books: Book[] = [];
-  currentCategoryId: number;
+
 
   listBooks():void {
+    this.searchMode = this._activatedRoute.snapshot.paramMap.has('keyword');
+    // console.log(this._activatedRoute.snapshot.paramMap);
+    if (!this.searchMode)
+    {
+      //all books
+      this.handleListBooks();
+    } else {
+      //do the search
+      this.handleSearchBooks();
+    }
+    
+  }
 
+
+
+  handleListBooks() {
     const hasCategoryId: boolean = this._activatedRoute.snapshot.paramMap.has('id');
-
     if (hasCategoryId === true)
     {
       this.currentCategoryId = +this._activatedRoute.snapshot.paramMap.get('id');
@@ -38,13 +54,24 @@ export class BookListComponent implements OnInit {
       this.currentCategoryId = 0;
     }
 
-
     this._bookService.getBooks(this.currentCategoryId).subscribe(
       data => {
         this.books = data
       }
     )
   }
+
+  handleSearchBooks() {
+    const keyword:string = this._activatedRoute.snapshot.paramMap.get('keyword');
+    this._bookService.searchBooks(keyword).subscribe(
+      data => {
+        this.books = data
+      }
+    )
+  }
+
+
+
 
   convertPrice(price: number):number {
     return price/15;

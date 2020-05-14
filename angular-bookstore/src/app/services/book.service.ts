@@ -23,16 +23,23 @@ export class BookService {
     );
     } else {
       const searchUrl = `${this.baseUrl}/search/categoryid?id=${theCategoryId}`;
-      return this.httpClient.get<GetBooksFromResponse>(searchUrl).pipe(
-        map(response => response._embedded.books)
-      );
+      return this.getBookList(searchUrl);
     }
+  }
+
+  private getBookList(searchUrl: string): Observable<Book[]> {
+    return this.httpClient.get<GetBooksFromResponse>(searchUrl).pipe(map(response => response._embedded.books));
   }
 
   getCategories():Observable<BookCategory[]> {
     return this.httpClient.get<GetBookCategoriesFromResponse>(this.categoryUrl).pipe(
       map(response => response._embedded.bookCategory)
     );
+  }
+
+  searchBooks(keyword: string):Observable<Book[]> {
+    const searchUrl = `${this.baseUrl}/search/searchbykeyword?name=${keyword}`;
+    return this.getBookList(searchUrl);
   }
 
 }
