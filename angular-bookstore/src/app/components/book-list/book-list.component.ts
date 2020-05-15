@@ -14,6 +14,10 @@ export class BookListComponent implements OnInit {
   books: Book[] = [];
   currentCategoryId: number;
   searchMode: boolean;
+
+  //pagination
+  pageOfItems: Array<Book>;
+  pageSize: number = 6;
   
 
   constructor(private _bookService: BookService,
@@ -26,6 +30,11 @@ export class BookListComponent implements OnInit {
     })
   }
 
+  //pagination
+  pageClick(_pageOfItems: Array<Book>):void {
+    //updat current page of items
+    this.pageOfItems = _pageOfItems;
+  }
 
 
   listBooks():void {
@@ -69,9 +78,6 @@ export class BookListComponent implements OnInit {
       }
     )
   }
-
-
-
 
   convertPrice(price: number):number {
     return price/15;
