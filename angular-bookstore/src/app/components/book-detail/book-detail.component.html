@@ -1,0 +1,40 @@
+<div class="row">
+
+    <div class="col-lg-3">
+  
+      <!-- <h1 class="my-4">Shop Name</h1> -->
+      <app-book-category></app-book-category>
+  
+    </div>
+  
+    <div class="col-lg-9">
+        <!-- <app-book-list></app-book-list> -->
+        <div class="row">
+            <!-- for book image displaying -->
+            <div class="col-12 col-md-4">
+                <div class="thumbnail">
+                    <img [src]="book.imageUrl" width="250" alt="">
+                </div>
+            </div>
+            <!-- for displaying book data -->
+            <div class="col-12 col-md-8">
+                <h3>{{book.name}}</h3>
+                <hr />
+                <p>{{book.description}}</p>
+                <hr />
+                <h4>Price: <strong>{{book.unitPrice | currency: 'PLN ' }}</strong></h4>
+                <hr />
+                <h6>Qty Available: {{book.unitsInStock}}</h6>
+                <hr />
+                <a class="btn btn-success" routerLink="/books">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <a class="btn btn-primary ml-1" href="#">
+                    <i class="fas fa-cart-arrow-down"></i> Add to cart
+                    <!-- <i class="fab fa-accusoft">Add to cart again..</i> -->
+                </a>
+            </div>
+      </div>
+    </div>
+  </div>
+  
