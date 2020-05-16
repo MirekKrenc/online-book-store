@@ -15,15 +15,19 @@ export class BookService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getBooks(theCategoryId: number):Observable<Book[]> {
+  
+  getBooks(theCategoryId: number, currentPage: number, pageSize: number):Observable<GetBooksFromResponse> {
+    
     if (theCategoryId === 0)
     {
-    return this.httpClient.get<GetBooksFromResponse>(this.baseUrl).pipe(
-      map(response => response._embedded.books)
-    );
+      //"http://localhost:8080/api/v1/books?page=0&size=20"
+      const paginationUrl=`${this.baseUrl}?page=${currentPage}&size=${pageSize}`;
+      console.log("URL=", paginationUrl);
+      return this.httpClient.get<GetBooksFromResponse>(paginationUrl);
     } else {
-      const searchUrl = `${this.baseUrl}/search/categoryid?id=${theCategoryId}`;
-      return this.getBookList(searchUrl);
+      //url "http://localhost:8080/api/v1/books/search/categoryid{?id,page,size,sort}"
+      const searchUrl = `${this.baseUrl}/search/categoryid?id=${theCategoryId}&page=${currentPage}&size=${pageSize}`;
+      return this.httpClient.get<GetBooksFromResponse>(searchUrl);
     }
   }
 
@@ -37,9 +41,15 @@ export class BookService {
     );
   }
 
-  searchBooks(keyword: string):Observable<Book[]> {
-    const searchUrl = `${this.baseUrl}/search/searchbykeyword?name=${keyword}`;
-    return this.getBookList(searchUrl);
+  // searchBooks(keyword: string):Observable<Book[]> {
+  //   const searchUrl = `${this.baseUrl}/search/searchbykeyword?name=${keyword}`;
+  //   return this.getBookList(searchUrl);
+  // }  
+  
+  searchBooks(keyword: string, currentPage: number, pageSize: number):Observable<GetBooksFromResponse> {
+    //http://localhost:8080/api/v1/books/search/searchbykeyword?name,page,size,sort}
+    const searchUrl = `${this.baseUrl}/search/searchbykeyword?name=${keyword}&page=${currentPage}&size=$(pageSize)`;
+    return this.httpClient.get<GetBooksFromResponse>(searchUrl);
   }
 
   searchBook(bookId: number): Observable<Book> {
@@ -53,6 +63,12 @@ export class BookService {
 interface GetBooksFromResponse {
   _embedded: {
     books: Book[];
+  },
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number 
   }
 }
 
