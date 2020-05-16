@@ -3,6 +3,8 @@ import { BookService } from 'src/app/services/book.service';
 import { Book } from 'src/app/common/book';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-book-detail',
@@ -14,7 +16,8 @@ export class BookDetailComponent implements OnInit {
   book: Book = new Book();
 
   constructor(private _bookService: BookService,
-    private _activatedRoute: ActivatedRoute) { }
+    private _activatedRoute: ActivatedRoute,
+    private _cartService: CartService) { }
 
   ngOnInit(): void {
     this._activatedRoute.paramMap.subscribe(
@@ -31,9 +34,13 @@ export class BookDetailComponent implements OnInit {
       
       data => {
         this.book = data;
-        this.book.unitPrice = this.convertPrice(this.book.unitPrice);
       }
     );
+  }
+
+  addToCart() {
+    const cartItem: CartItem = new CartItem(this.book);
+    this._cartService.addToCart(cartItem);
   }
 
   convertPrice(price: number):number {

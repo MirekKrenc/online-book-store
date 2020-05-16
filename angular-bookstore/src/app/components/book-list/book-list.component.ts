@@ -3,6 +3,8 @@ import { Book } from 'src/app/common/book';
 import { BookService } from 'src/app/services/book.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap'
+import { CartService } from 'src/app/services/cart.service';
+import { CartItem } from 'src/app/common/cart-item';
 
 @Component({
   selector: 'app-book-list',
@@ -29,7 +31,8 @@ export class BookListComponent implements OnInit {
 
   constructor(private _bookService: BookService,
               private _activatedRoute: ActivatedRoute,
-              private _ngPaginationConfig: NgbPaginationConfig) {
+              private _ngPaginationConfig: NgbPaginationConfig,
+              private _cartService: CartService) {
                 _ngPaginationConfig.maxSize = 3;
                 _ngPaginationConfig.boundaryLinks = true;
                }
@@ -111,13 +114,17 @@ processPaginate(){
     console.log("pageSize = ", this.pageSize);
   }
 }
-
+addToCart(book: Book) {
+  // console.log("Book ", book);
+  const cartItem: CartItem = new CartItem(book);
+  this._cartService.addToCart(cartItem);
+}
 
 
   //funkcje pomocnicze
-  convertPrice(price: number):number {
-    return price/15;
-  }
+  // convertPrice(price: number):number {
+  //   return price/15;
+  // }
 
   replacePngToJpg(url: string):string {
     return url.replace('png','jpg');

@@ -20,11 +20,11 @@
             <h4 class="card-title">
               <a routerLink="/books/{{book.id}}">{{book.name}}</a>
             </h4>
-            <h5>{{convertPrice(book.unitPrice) | currency: 'PLN ' }}</h5>
+            <h5>{{book.unitPrice | currency: 'PLN ' }}</h5>
             <p class="card-text text-truncate">{{book.description}}</p>
           </div>
           <div class="card-footer">
-            <button class="btn btn-primary float-right">Add to cart</button>
+            <button class="btn btn-primary float-right" (click)="addToCart(book)">Add to cart</button>
           </div>
         </div>
       </div>
